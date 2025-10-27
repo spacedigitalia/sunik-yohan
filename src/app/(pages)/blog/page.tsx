@@ -8,56 +8,47 @@ import BlogSkeleton from '@/hooks/(pages)/blog/BlogSkeleton';
 
 import { Metadata } from 'next';
 
-import Script from 'next/script';
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
 
 export const metadata: Metadata = {
     title: 'Blog | Sunik Yohan',
-    description: 'Read our latest articles and insights at Sunik Yohan',
-    keywords: 'blog, articles, insights, Sunik Yohan',
+    description: 'Baca artikel dan wawasan terbaru kami di Sunik Yohan',
+    keywords: 'blog, artikel, wawasan, Sunik Yohan',
     openGraph: {
         title: 'Blog | Sunik Yohan',
-        description: 'Read our latest articles and insights at Sunik Yohan',
+        description: 'Baca artikel dan wawasan terbaru kami di Sunik Yohan',
         type: 'website',
         locale: 'id_ID',
         siteName: 'Sunik Yohan',
         images: [
             {
-                url: '/public/blog.png', // Make sure to add this image to your public folder
+                url: '/public/blog.png',
                 width: 1200,
                 height: 630,
-                alt: 'Sunik Yohan Blog',
+                alt: 'Blog Sunik Yohan',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Blog | Sunik Yohan',
-        description: 'Read our latest articles and insights at Sunik Yohan',
-        images: ['/public/blog.png'], // Same image as OpenGraph
+        description: 'Baca artikel dan wawasan terbaru kami di Sunik Yohan',
+        images: ['/public/blog.png'],
     },
 };
 
 export default async function Page() {
-    const breadcrumbJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://spacedigitalia.my.id" },
-            { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://spacedigitalia.my.id/blog" }
-        ]
-    }
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Blog", item: `${BASE_URL}/blog` }
+    ];
+
     try {
         const blogData = await fetchBlogData();
 
         return <Fragment>
-            <Script
-                id="breadcrumb-schema"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbJsonLd)
-                }}
-                strategy="afterInteractive"
-            />
+            <BreadcrumbJsonLd items={breadcrumbItems} />
             <Blog blogData={blogData} />
         </Fragment>;
     } catch (error) {

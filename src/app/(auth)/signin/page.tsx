@@ -8,9 +8,24 @@ import SigninLayout from "@/hooks/auth/signin/SigninLayout"
 
 import { cookies } from 'next/headers'
 
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
+
 export const metadata: Metadata = {
-    title: 'Login | Sunik Yohan',
-    description: 'Login to your account',
+    title: 'Masuk | Sunik Yohan',
+    description: 'Masuk ke akun Anda di Sunik Yohan',
+    keywords: 'login, masuk, akun, Sunik Yohan',
+    openGraph: {
+        title: 'Masuk | Sunik Yohan',
+        description: 'Masuk ke akun Anda di Sunik Yohan',
+        type: 'website',
+        locale: 'id_ID',
+        siteName: 'Sunik Yohan',
+    },
+    twitter: {
+        card: 'summary',
+        title: 'Masuk | Sunik Yohan',
+        description: 'Masuk ke akun Anda di Sunik Yohan',
+    },
 }
 
 export default async function Signin() {
@@ -21,7 +36,16 @@ export default async function Signin() {
         redirect('/')
     }
 
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Masuk", item: `${BASE_URL}/signin` }
+    ];
+
     return (
-        <SigninLayout />
+        <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            <SigninLayout />
+        </>
     )
 }

@@ -3,10 +3,24 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import SignupLayout from "@/hooks/auth/signup/SignupLayout"
 import { cookies } from 'next/headers'
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
 
 export const metadata: Metadata = {
-    title: 'Sign Up | Sunik Yohan',
-    description: 'Sign up to your account',
+    title: 'Daftar | Sunik Yohan',
+    description: 'Daftar akun baru di Sunik Yohan',
+    keywords: 'register, daftar, signup, akun baru, Sunik Yohan',
+    openGraph: {
+        title: 'Daftar | Sunik Yohan',
+        description: 'Daftar akun baru di Sunik Yohan',
+        type: 'website',
+        locale: 'id_ID',
+        siteName: 'Sunik Yohan',
+    },
+    twitter: {
+        card: 'summary',
+        title: 'Daftar | Sunik Yohan',
+        description: 'Daftar akun baru di Sunik Yohan',
+    },
 }
 
 export default async function Signup() {
@@ -17,7 +31,16 @@ export default async function Signup() {
         redirect('/')
     }
 
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Daftar", item: `${BASE_URL}/signup` }
+    ];
+
     return (
-        <SignupLayout />
+        <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            <SignupLayout />
+        </>
     )
 }

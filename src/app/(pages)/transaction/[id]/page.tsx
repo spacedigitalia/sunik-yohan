@@ -2,37 +2,48 @@ import React from 'react'
 
 import { Metadata } from 'next'
 
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
+
 export const metadata: Metadata = {
-    title: 'Transaction | Sunik Yohan',
-    description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
-    keywords: 'gallery, visual works, creative projects, Sunik Yohan',
+    title: 'Transaksi | Sunik Yohan',
+    description: 'Lihat detail transaksi Anda di Sunik Yohan',
+    keywords: 'transaksi, pembayaran, Sunik Yohan',
     openGraph: {
-        title: 'Gallery | Sunik Yohan',
-        description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
+        title: 'Transaksi | Sunik Yohan',
+        description: 'Lihat detail transaksi Anda di Sunik Yohan',
         type: 'website',
         locale: 'id_ID',
         siteName: 'Sunik Yohan',
         images: [
             {
-                url: '/public/gallery.png', // Make sure to add this image to your public folder
+                url: '/public/products.png',
                 width: 1200,
                 height: 630,
-                alt: 'Sunik Yohan Gallery',
+                alt: 'Transaksi Sunik Yohan',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Gallery | Sunik Yohan',
-        description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
-        images: ['/public/gallery.png'], // Same image as OpenGraph
+        title: 'Transaksi | Sunik Yohan',
+        description: 'Lihat detail transaksi Anda di Sunik Yohan',
+        images: ['/public/products.png'],
     },
 };
 
 import Transaction from "@/hooks/(pages)/transaction/Transaction"
 
-export default function page() {
+export default async function page() {
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Transaksi", item: `${BASE_URL}/transaction` }
+    ];
+
     return (
-        <Transaction />
+        <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            <Transaction />
+        </>
     )
 }

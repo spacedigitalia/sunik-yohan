@@ -40,13 +40,27 @@ export async function generateMetadata({
   const products = await getProducts(params.slug);
 
   return {
-    title: products ? `Products - ${products.title}` : "Products Not Found",
-
+    title: products
+      ? `Produk - ${products.title} | Sunik Yohan`
+      : "Produk Tidak Ditemukan | Sunik Yohan",
+    description: products ? products.description : "Produk tidak ditemukan",
+    keywords: "produk, Sunik Yohan",
     openGraph: {
-      title: products ? `Products - ${products.title}` : "Products Not Found",
-      description: products
-        ? `Products - ${products.description}`
-        : "Products Not Found",
+      title: products
+        ? `Produk - ${products.title} | Sunik Yohan`
+        : "Produk Tidak Ditemukan | Sunik Yohan",
+      description: products ? products.description : "Produk tidak ditemukan",
+      type: "website",
+      locale: "id_ID",
+      siteName: "Sunik Yohan",
+      images: products?.thumbnail ? [products.thumbnail[0]] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: products
+        ? `Produk - ${products.title} | Sunik Yohan`
+        : "Produk Tidak Ditemukan | Sunik Yohan",
+      description: products ? products.description : "Produk tidak ditemukan",
       images: products?.thumbnail ? [products.thumbnail[0]] : [],
     },
   };

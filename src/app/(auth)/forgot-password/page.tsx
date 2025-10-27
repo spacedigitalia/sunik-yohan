@@ -8,9 +8,24 @@ import ForgotPasswordLayout from "@/hooks/auth/forgot-password/ForgotPasswordLay
 
 import { cookies } from 'next/headers'
 
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
+
 export const metadata: Metadata = {
     title: 'Lupa Kata Sandi | Sunik Yohan',
-    description: 'Reset password akun Anda',
+    description: 'Reset kata sandi akun Anda di Sunik Yohan',
+    keywords: 'lupa password, reset kata sandi, Sunik Yohan',
+    openGraph: {
+        title: 'Lupa Kata Sandi | Sunik Yohan',
+        description: 'Reset kata sandi akun Anda di Sunik Yohan',
+        type: 'website',
+        locale: 'id_ID',
+        siteName: 'Sunik Yohan',
+    },
+    twitter: {
+        card: 'summary',
+        title: 'Lupa Kata Sandi | Sunik Yohan',
+        description: 'Reset kata sandi akun Anda di Sunik Yohan',
+    },
 }
 
 export default async function ForgotPassword() {
@@ -21,7 +36,17 @@ export default async function ForgotPassword() {
         redirect('/')
     }
 
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Masuk", item: `${BASE_URL}/signin` },
+        { name: "Lupa Kata Sandi", item: `${BASE_URL}/forgot-password` }
+    ];
+
     return (
-        <ForgotPasswordLayout />
+        <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            <ForgotPasswordLayout />
+        </>
     )
 }

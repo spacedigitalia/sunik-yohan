@@ -12,38 +12,25 @@ import "@/base/style/globals.css";
 
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/base/analytics/GoogleTagManager'
 
-export { metadata };
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
 
-import Script from "next/script";
+export { metadata };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://spacedigitalia.my.id" },
-      { "@type": "ListItem", "position": 2, "name": "About", "item": "https://spacedigitalia.my.id/about" },
-      { "@type": "ListItem", "position": 3, "name": "Products", "item": "https://spacedigitalia.my.id/products" },
-      { "@type": "ListItem", "position": 4, "name": "Gallery", "item": "https://spacedigitalia.my.id/gallery" },
-      { "@type": "ListItem", "position": 5, "name": "Blog", "item": "https://spacedigitalia.my.id/blog" }
-    ]
-  }
+  const BASE_URL = getBaseUrl();
+  const breadcrumbItems = [
+    { name: "Beranda", item: BASE_URL }
+  ];
+
   return (
     <html lang="id">
       <head>
         <GoogleTagManager />
-        <Script
-          id="breadcrumb-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbJsonLd)
-          }}
-          strategy="afterInteractive"
-        />
+        <BreadcrumbJsonLd items={breadcrumbItems} />
       </head>
       <body
         className={`${poppins.variable} ${spaceGrotesk.variable} antialiased`}

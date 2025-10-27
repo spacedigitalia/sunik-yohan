@@ -8,56 +8,47 @@ import GallerySkeleton from '@/hooks/(pages)/gallery/GallerySkeleton';
 
 import { Metadata } from 'next';
 
-import Script from 'next/script';
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
 
 export const metadata: Metadata = {
-    title: 'Gallery | Sunik Yohan',
-    description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
-    keywords: 'gallery, visual works, creative projects, Sunik Yohan',
+    title: 'Galeri | Sunik Yohan',
+    description: 'Jelajahi koleksi karya visual dan proyek kreatif kami di Sunik Yohan',
+    keywords: 'galeri, karya visual, proyek kreatif, Sunik Yohan',
     openGraph: {
-        title: 'Gallery | Sunik Yohan',
-        description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
+        title: 'Galeri | Sunik Yohan',
+        description: 'Jelajahi koleksi karya visual dan proyek kreatif kami di Sunik Yohan',
         type: 'website',
         locale: 'id_ID',
         siteName: 'Sunik Yohan',
         images: [
             {
-                url: '/public/gallery.png', // Make sure to add this image to your public folder
+                url: '/public/gallery.png',
                 width: 1200,
                 height: 630,
-                alt: 'Sunik Yohan Gallery',
+                alt: 'Galeri Sunik Yohan',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Gallery | Sunik Yohan',
-        description: 'Explore our collection of visual works and creative projects at Sunik Yohan',
-        images: ['/public/gallery.png'], // Same image as OpenGraph
+        title: 'Galeri | Sunik Yohan',
+        description: 'Jelajahi koleksi karya visual dan proyek kreatif kami di Sunik Yohan',
+        images: ['/public/gallery.png'],
     },
 };
 
 export default async function Page() {
-    const breadcrumbJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://spacedigitalia.my.id" },
-            { "@type": "ListItem", "position": 2, "name": "Gallery", "item": "https://spacedigitalia.my.id/gallery" }
-        ]
-    }
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Galeri", item: `${BASE_URL}/gallery` }
+    ];
+
     try {
         const galleryData = await fetchGalleryData();
 
         return <Fragment>
-            <Script
-                id="breadcrumb-schema"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbJsonLd)
-                }}
-                strategy="afterInteractive"
-            />
+            <BreadcrumbJsonLd items={breadcrumbItems} />
             <Gallery galleryData={galleryData} />
         </Fragment>;
     } catch (error) {

@@ -10,57 +10,48 @@ import ProductSkeleton from '@/hooks/(pages)/products/ProductsSkeleton';
 
 import { Metadata } from 'next';
 
-import Script from 'next/script';
+import { BreadcrumbJsonLd, getBaseUrl } from '@/base/helper/BreadCrumJson';
 
 export const metadata: Metadata = {
-    title: 'Products | Sunik Yohan',
-    description: 'Explore our collection of products at Sunik Yohan',
-    keywords: 'products, collection, Sunik Yohan',
+    title: 'Produk | Sunik Yohan',
+    description: 'Jelajahi koleksi produk kami di Sunik Yohan',
+    keywords: 'produk, koleksi, Sunik Yohan',
     openGraph: {
-        title: 'Products | Sunik Yohan',
-        description: 'Explore our collection of products at Sunik Yohan',
+        title: 'Produk | Sunik Yohan',
+        description: 'Jelajahi koleksi produk kami di Sunik Yohan',
         type: 'website',
         locale: 'id_ID',
         siteName: 'Sunik Yohan',
         images: [
             {
-                url: '/public/products.png', // Make sure to add this image to your public folder
+                url: '/public/products.png',
                 width: 1200,
                 height: 630,
-                alt: 'Sunik Yohan Products',
+                alt: 'Produk Sunik Yohan',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Products | Sunik Yohan',
-        description: 'Explore our collection of products at Sunik Yohan',
-        images: ['/public/products.png'], // Same image as OpenGraph
+        title: 'Produk | Sunik Yohan',
+        description: 'Jelajahi koleksi produk kami di Sunik Yohan',
+        images: ['/public/products.png'],
     },
 };
 
 export default async function Page() {
-    const breadcrumbJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://spacedigitalia.my.id" },
-            { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://spacedigitalia.my.id/products" }
-        ]
-    }
+    const BASE_URL = getBaseUrl();
+    const breadcrumbItems = [
+        { name: "Beranda", item: BASE_URL },
+        { name: "Produk", item: `${BASE_URL}/products` }
+    ];
+
     try {
         const productsData = await fetchProductsData();
         const bannerData = await fetchBannerData();
 
         return <Fragment>
-            <Script
-                id="breadcrumb-schema"
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbJsonLd)
-                }}
-                strategy="afterInteractive"
-            />
+            <BreadcrumbJsonLd items={breadcrumbItems} />
             <Product productsData={productsData} bannerData={bannerData} />
         </Fragment>;
     } catch (error) {

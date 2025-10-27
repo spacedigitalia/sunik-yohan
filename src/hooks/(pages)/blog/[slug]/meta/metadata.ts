@@ -40,11 +40,27 @@ export async function generateMetadata({
   const blog = await getBlog(params.slug);
 
   return {
-    title: blog ? `blog - ${blog.title}` : "blog Not Found",
-
+    title: blog
+      ? `Blog - ${blog.title} | Sunik Yohan`
+      : "Blog Tidak Ditemukan | Sunik Yohan",
+    description: blog ? blog.description : "Blog tidak ditemukan",
+    keywords: "blog, artikel, Sunik Yohan",
     openGraph: {
-      title: blog ? `blog - ${blog.title}` : "blog Not Found",
-      description: blog ? `blog - ${blog.description}` : "blog Not Found",
+      title: blog
+        ? `Blog - ${blog.title} | Sunik Yohan`
+        : "Blog Tidak Ditemukan | Sunik Yohan",
+      description: blog ? blog.description : "Blog tidak ditemukan",
+      type: "article",
+      locale: "id_ID",
+      siteName: "Sunik Yohan",
+      images: blog?.thumbnail ? [blog.thumbnail[0]] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog
+        ? `Blog - ${blog.title} | Sunik Yohan`
+        : "Blog Tidak Ditemukan | Sunik Yohan",
+      description: blog ? blog.description : "Blog tidak ditemukan",
       images: blog?.thumbnail ? [blog.thumbnail[0]] : [],
     },
   };
