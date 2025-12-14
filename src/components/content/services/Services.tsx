@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 import { useInView } from 'framer-motion'
 
@@ -22,7 +22,7 @@ export default function Services({ serviceData }: { serviceData: ServicesData[] 
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true })
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { y: 50 },
         visible: {
             y: 0,
@@ -32,13 +32,13 @@ export default function Services({ serviceData }: { serviceData: ServicesData[] 
         }
     }
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 50 },
         visible: {
             y: 0,
             transition: {
                 duration: 0.5,
-                ease: "easeOut"
+                ease: [0.42, 0, 0.58, 1] as const
             }
         }
     }
@@ -85,7 +85,7 @@ export default function Services({ serviceData }: { serviceData: ServicesData[] 
                                 className='group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2'
                             >
                                 {/* Image Container */}
-                                <div className='relative w-full aspect-[4/3] sm:aspect-[4/3] overflow-hidden'>
+                                <div className='relative w-full aspect-4/3 overflow-hidden'>
                                     <Image
                                         src={item.imageUrl}
                                         alt={item.title}
